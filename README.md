@@ -53,14 +53,7 @@ Follow these steps to set up the project on your local machine:
     cd laravel-expense-tracker
     ```
 
-2. **Install dependencies**:
-
-    ```bash
-    composer install
-    npm install && npm run dev
-    ```
-
-3. **Configure environment variables**:
+2. **Configure environment variables**:
 
     - Duplicate the `.env.example` file and rename it to `.env`.
     - Update the following lines in the `.env` file:
@@ -73,25 +66,19 @@ Follow these steps to set up the project on your local machine:
         DB_PASSWORD=your_password
         ```
 
-4. **Run migrations**:
+3. **Run migrations**:
 
     ```bash
     php artisan migrate
     ```
 
-5. **Seed the database** (optional for test data):
-
-    ```bash
-    php artisan db:seed
-    ```
-
-6. **Run the server**:
+4. **Run the server**:
 
     ```bash
     php artisan serve
     ```
 
-7. Open the application in your browser:
+5. Open the application in your browser:
     ```
     http://127.0.0.1:8000
     ```
