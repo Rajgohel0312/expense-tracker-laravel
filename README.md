@@ -9,6 +9,7 @@ Laravel Expense Tracker is a simple, secure, and user-friendly application for m
 -   Secure URL encryption for sensitive operations.
 -   Responsive design for mobile and desktop compatibility.
 -   Robust data validation for user inputs.
+-   Have Pagination and Categories to filter.
 
 ## Technologies Used
 
