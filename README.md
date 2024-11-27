@@ -20,6 +20,20 @@ Laravel Expense Tracker is a simple, secure, and user-friendly application for m
     -   Composer
     -   MySQL 5.7+ or MariaDB 10+
 
+## Screenshots
+
+### Homepage
+
+![Homepage](screenshots/homepage.png)
+
+### Add Expense Form
+
+![Add Expense](screenshots/add-expense.png)
+
+### Edit Expense
+
+![Edit Expense](screenshots/edit-expense.png)
+
 ## Installation
 
 Follow these steps to set up the project on your local machine:
