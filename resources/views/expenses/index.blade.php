@@ -8,11 +8,31 @@
                 <b class="@if($totalCount < 0) text-danger @elseif($totalCount == 0)  @else text-success @endif">
                     {{ $totalCount }} Rs.
                 </b>
+            </h3>
         </div>
         <div class="card-body">
             <div class="row">
+                <!-- Filter Form -->
+                <div class="col-md-12 mb-4">
+                    <form method="GET" action="{{ route('expenses.index') }}" class="row g-3 align-items-center">
+                        <div class="col-auto">
+                            <select name="category" class="form-control">
+                                <option value="">All Categories</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}" {{ request()->category == $category->id ? 'selected' : '' }}>
+                                        {{ $category->category_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                        </div>
+                    </form>
+                </div>
+
                 <!-- Expenses Table -->
-                <div class="col-md-12 ">
+                <div class="col-md-12">
                     <div class="expenseTable table-responsive">
                         <h5 class="mb-3">Expense List</h5>
                         <a class="text-end btn btn-success ml-auto mb-3" href="/expenses/addExpenses">Add Expense</a>
@@ -29,15 +49,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($expenses as $expense)
+                                @forelse($expenses as $expense)
                                     <tr>
-                                        <td>{{$loop->index + 1}}</td>
+                                        <td>{{ $loop->iteration + (($expenses->currentPage() - 1) * $expenses->perPage()) }}
+                                        </td>
                                         <td>{{ $expense->categories ? $expense->categories->category_name : 'No Category' }}
                                         </td>
-                                        <td>{{$expense->amount}} Rs.</td>
-                                        <td>{{$expense->description}}</td>
-
-                                        <td>{{$expense->date}}</td>
+                                        <td>{{ $expense->amount }} Rs.</td>
+                                        <td>{{ $expense->description }}</td>
+                                        <td>{{ $expense->date }}</td>
                                         <td>
                                             <a href="{{ url('/expenses/' . base64_encode(Crypt::encrypt($expense->id))) . '/edit' }}"
                                                 class="btn btn-sm btn-warning me-2">Edit</a>
@@ -52,16 +72,21 @@
                                             </form>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center">No expenses found.</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- Add Expense Form -->
-
+                <!-- Pagination -->
+                <div class="d-flex justify-content-center">
+                    {{ $expenses->appends(['category' => request()->category])->links() }}
+                </div>
             </div>
-
         </div>
     </div>
 </div>

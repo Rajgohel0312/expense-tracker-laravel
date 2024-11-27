@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categories;
 use App\Models\Expenses;
 use App\Models\Income;
 use Crypt;
@@ -9,13 +10,32 @@ use Illuminate\Http\Request;
 
 class ExpenseController extends Controller
 {
-    public function showExpense()
+    public function showExpense(Request $request)
     {
+        $query = Expenses::with('categories:id,category_name');
 
-        $expenses = Expenses::with('categories:id,category_name')->get();
+        // Apply category filter if provided
+        if ($request->has('category') && $request->category != '') {
+            $query->where('category_id', $request->category);
+        }
+
+        // Paginate results
+        $expenses = $query->paginate(10);
+
+        // Calculate the total expenses balance
         $expenseTotal = Income::sum('incomeAmount') - Expenses::sum('amount');
-        return view('expenses.index', ['expenses' => $expenses, 'totalCount' => $expenseTotal]);
+
+        // Get all categories for the filter dropdown
+        $categories = Categories::all();
+
+        return view('expenses.index', [
+            'expenses' => $expenses,
+            'totalCount' => $expenseTotal,
+            'categories' => $categories, // Pass categories for the dropdown
+            'selectedCategory' => $request->category // Keep the selected category for maintaining state
+        ]);
     }
+
     public function addExpenses()
     {
         return view('expenses.add');
